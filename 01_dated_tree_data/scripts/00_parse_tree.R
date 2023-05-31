@@ -9,6 +9,7 @@ ggtree(tr) +
   geom_tippoint(aes(colour = str_split(label, '_', simplify = TRUE)[, 1])) +
   geom_nodelab(aes(x = branch, label = node))
 
+# Clades to remove (mitochondrial and chloroplastic)
 # 1240
 # 898
 

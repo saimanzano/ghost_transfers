@@ -39,7 +39,7 @@ sim_ghost_transfer <- function(branch_space, feca, leca) {
     transfer <- runif(1, death, ghost_birth)
     ghost_death <- runif(1, 0, transfer)
   } else if (birth >= feca & death >= leca) {
-    # If the branch was born before FECA and dies before LECA
+    # If the branch was born before FECA and died before LECA
     ghost_birth <- runif(1, death, birth)
     if (ghost_birth >= feca) {
       transfer <- runif(1, death, feca)
@@ -48,11 +48,12 @@ sim_ghost_transfer <- function(branch_space, feca, leca) {
     }
     ghost_death <- runif(1, 0, transfer)
   } else if (birth <= feca & death <= leca) {
-    # If the branch was born 
+    # If the branch was born after FECA and died after LECA
     ghost_birth <- runif(1, leca, birth)
     transfer <- runif(1, leca, ghost_birth)
     ghost_death <- runif(1, 0, transfer)
   } else {
+    # If the branch was born after FECA and died after LECA
     ghost_birth <- runif(1, leca, birth)
     transfer <- runif(1, leca, ghost_birth)
     ghost_death <- runif(1, 0, transfer)

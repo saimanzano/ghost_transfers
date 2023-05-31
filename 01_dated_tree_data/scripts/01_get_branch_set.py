@@ -7,6 +7,7 @@ t = ete3.PhyloTree(treefile)
 euk_leaves = []
 for leave in t.iter_leaves():
     leave.add_feature('clade', leave.name.split('_', 1)[0].replace("'", ''))
+    leave.add_feature('phylum', leave.name.split('_', 1)[1].replace("'", ''))
     if leave.clade == 'Eukaryota':
         euk_leaves.append(leave.name)
 

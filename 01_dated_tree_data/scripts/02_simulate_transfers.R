@@ -55,7 +55,7 @@ sim_ghost_transfer <- function(branch_space, feca, leca) {
   } else {
     # If the branch was born after FECA and died after LECA
     ghost_birth <- runif(1, leca, birth)
-    transfer <- runif(1, leca, ghost_birth)
+    transfer <- runif(1, leca, feca)
     ghost_death <- runif(1, 0, transfer)
   }
 
@@ -69,16 +69,16 @@ sim_ghost_transfer <- function(branch_space, feca, leca) {
 }
 
 ghost_simulator <- function(branch_space, feca, leca, N) {
-  marramiau <- c()
+  odf <- c()
   for (i in 1:N) {
-    marramiau <- rbind(marramiau, sim_ghost_transfer(branch_space, feca, leca))
+    odf <- rbind(odf, sim_ghost_transfer(branch_space, feca, leca))
   }
   
-  return(marramiau)
+  return(odf)
 }
 
 # Loading data ----
-brs <- read.csv('../outputs/node_ages.tsv', sep = '\t')
+brs <- read.csv('../outputs/node_ages_phylum.tsv', sep = '\t')
 
 # Setting boundaries
 feca <- brs[which(brs$node == 'FECA-LECA'), 'birth']
@@ -88,7 +88,7 @@ leca <- brs[which(brs$node == 'FECA-LECA'), 'death']
 brs <- brs[which(brs$birth >= leca & brs$death <= feca & brs$clades == 'Bacteria'), ]
 
 # Simulating ghosts ----
-ghost_simulator(brs, feca, leca, 1000)
+miau <- ghost_simulator(brs, feca, leca, 1000)
 
 # Plotting simulations
 p <- ggplot(brs) +
@@ -99,7 +99,7 @@ p <- ggplot(brs) +
                lty = 4, colour = 'steelblue') +
     xlab('Time (Mya)') +
     ylab('Branch') +
-    geom_point(data = marramiau, aes(y = as.character(branch), x = -ghost_death), col = 'red') +
-    geom_point(data = marramiau, aes(y = as.character(branch), x = -ghost_birth), col = 'steelblue') +
-    geom_point(data = marramiau, aes(y = as.character(branch), x = -transfer), col = 'darkolivegreen')
+    geom_point(data = miau, aes(y = as.character(branch), x = -ghost_death), col = 'red') +
+    geom_point(data = miau, aes(y = as.character(branch), x = -ghost_birth), col = 'steelblue') +
+    geom_point(data = miau, aes(y = as.character(branch), x = -transfer), col = 'darkolivegreen')
 p

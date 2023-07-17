@@ -5,11 +5,15 @@ treefile = '../data/pruned_tree.nwk'
 t = ete3.PhyloTree(treefile)
 
 euk_leaves = []
-for leave in t.iter_leaves():
-    leave.add_feature('clade', leave.name.split('_', 1)[0].replace("'", ''))
-    leave.add_feature('phylum', leave.name.split('_', 1)[1].split('-', 1)[0].split('_', 1)[0].replace("'", ''))
-    if leave.clade == 'Eukaryota':
-        euk_leaves.append(leave.name)
+for leaf in t.iter_leaves():
+    leaf.add_feature('clade', leaf.name.split('_', 1)[0].replace("'", ''))
+    leaf.add_feature('phylum', leaf.name.split('_', 1)[1].split('-', 1)[0].split('_', 1)[0].replace("'", ''))
+    if '-' in leaf.name:
+        leaf.add_feature('classes', leaf.name.split('_', 1)[1].split('-')[1].split('_', 1)[0].replace("'", ''))
+    else:
+        leaf.add_feature('classes', leaf.name.split('_', 1)[1].split('_')[1].split('_', 1)[0].replace("'", ''))
+    if leaf.clade == 'Eukaryota':
+        euk_leaves.append(leaf.name)
 
 
 euk_anc = t.get_common_ancestor(euk_leaves)
@@ -23,8 +27,8 @@ laeca_age = ancs[0].get_distance(euk_leaves[0])
 euk_stem_length = euk_anc.dist
 leca_age = laeca_age - euk_stem_length
 
-print('node', 'birth', 'death', 'length', 'clades', 'phylums', sep='\t')
-print('FECA-LECA', laeca_age, leca_age, euk_stem_length, 'Eukaryota', 'Eukaryota', sep = '\t')
+print('node', 'birth', 'death', 'length', 'clades', 'phylums', 'class', sep='\t')
+print('FECA-LECA', laeca_age, leca_age, euk_stem_length, 'Eukaryota', 'Eukaryota', 'Eukaryota', sep = '\t')
 
 i = 0
 for node in t.traverse():
@@ -33,17 +37,19 @@ for node in t.traverse():
         length = node.dist
         death = birth - length
 
-        clades = [x.clade for x in node.get_leaves()]
-        phylum = [x.phylum for x in node.get_leaves()]
+        clades = ';'.join(set([x.clade for x in node.get_leaves()]))
+        phylum = ';'.join(set([x.phylum for x in node.get_leaves()]))
+        classes = ';'.join(set([x.classes for x in node.get_leaves()]))
 
-        print(i, birth, death, length, ';'.join(set(clades)), ';'.join(set(phylum)), sep='\t')
+        print(i, birth, death, length, clades, phylum, classes, sep='\t')
     else:
         birth = node.dist
         length = node.dist
 
-        clades = [x.clade for x in node.get_leaves()]
-        phylum = [x.phylum for x in node.get_leaves()]
+        clades = ';'.join(set([x.clade for x in node.get_leaves()]))
+        phylum = ';'.join(set([x.phylum for x in node.get_leaves()]))
+        classes = ';'.join(set([x.classes for x in node.get_leaves()]))
 
-        print(i, birth, 0, length, ';'.join(set(clades)), ';'.join(set(phylum)), sep='\t')
+        print(i, birth, 0, length, clades, phylum, classes, sep='\t')
     
     i += 1

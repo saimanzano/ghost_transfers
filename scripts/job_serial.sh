@@ -1,7 +1,3 @@
-# Simulating transfer from ghost lineages
-
-For executing the analysis from the scripts folder:
-```bash
 #!/bin/bash
 #SBATCH --job-name=donors
 #SBATCH --output=donors_%j.out
@@ -12,7 +8,7 @@ For executing the analysis from the scripts folder:
 #SBATCH --time=2-00:00:00
 
 module load gcc pcre2 R/4.3.0
-module load python/3.9.10
+module load python/3.6.1
 
 mkdir ../outputs
 Rscript 00_parse_tree.R
@@ -21,4 +17,4 @@ Rscript 02_simulate_transfers.R
 Rscript 03_plotting_shifts.R
 Rscript 04_groups_data.R
 Rscript 05_heatmap.R
-```
+

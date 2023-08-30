@@ -151,7 +151,7 @@ brs <- brs[which(brs$birth >= leca & brs$death <= feca & brs$clades == 'Bacteria
 
 shiftl <- c()
 tm0 <- Sys.time()
-for (i in 1:100) {
+for (i in 1:10000) {
   shiftl[[i]] <- get_shifts(ghost_simulator(brs, feca, leca, 1000), ghost_simulator(brs, feca, leca, 1000), feca)
   print(i)
 }

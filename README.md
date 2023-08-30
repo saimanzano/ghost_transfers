@@ -1,4 +1,4 @@
-# Simulating transfer from ghost lineages
+# Simulating transfers from ghost lineages
 
 This repository contains a set of scripts that performs the simulations of ghost transfers using a backbone tree of life. The scripts can be run sequentially by executing `sbatch job_serial.sh`, which will launch the job to the slurm queueing system. Loaded modules (R and python) differ between supercomputers, thus, for reproducibility one should change them to the ones installed in its server preserving the versions.
 

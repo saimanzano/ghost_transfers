@@ -30,6 +30,7 @@ get_donors <- function(x) {
                                  'donor2' = st[2, 'donor'],
                                  'shift_prop' = shift_prop,
                                  'shift' = st[, 'shift'][1],
+                                 'older_th_feca' = st[, 'older_th_feca'][1],
                                  'iter' = i))
   }
   row.names(res) <- NULL
